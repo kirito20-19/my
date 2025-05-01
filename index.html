@@ -527,25 +527,19 @@
                 });
             });
         });
-			// Управление видео при наведении на 2D Animation
-			document.querySelectorAll('.hover-trigger').forEach(trigger => {
-				const video = trigger.closest('.portfolio-item').querySelector('video');
-				
-				trigger.addEventListener('mouseenter', () => {
-					video.currentTime = 0; // Перематываем в начало
-					video.play().catch(e => console.log("Автовоспроизведение заблокировано", e));
-				});
-				
-				trigger.addEventListener('mouseleave', () => {
-					video.pause();
-				});
-			});
-
-			// Обновление обработчиков для portfolio-item (если нужно)
-			const portfolioItems = document.querySelectorAll('.portfolio-item:has(.portfolio-video)');
-			portfolioItems.forEach(item => {
-				// Ваш дополнительный код для этих элементов
-			});
+		 document.querySelectorAll('.hover-trigger').forEach(trigger => {
+        const video = trigger.closest('.portfolio-item').querySelector('video');
+        
+        trigger.addEventListener('mouseenter', () => {
+            video.currentTime = 0;
+            video.play().catch(e => console.log("Автовоспроизведение заблокировано", e));
+        });
+        
+        trigger.addEventListener('mouseleave', () => {
+            video.pause();
+        });
+    });
+</script>
     </script>
 </body>
 </html>
