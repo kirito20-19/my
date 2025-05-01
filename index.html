@@ -416,7 +416,7 @@
 						 class="portfolio-image">
 					
 					<video muted loop playsinline class="portfolio-video">
-						<source src="C:\Users\User\Desktop\проект\my\videos\your-logo-animation.mp4" type="video\mp4">
+						<source src="videos\your-logo-animation.mp4" type="video\mp4">
 						<!-- Fallback если видео не поддерживается -->
 						<p>Ваш браузер не поддерживает видео</p>
 					</video>
@@ -541,23 +541,6 @@
 			const video = trigger.closest('.portfolio-item').querySelector('video');
 			const videoSource = video.querySelector('source');
 			
-			// Проверяем загружается ли видео
-			videoSource.addEventListener('error', () => {
-				console.error('Видео не загружено! Проверьте путь:', videoSource.src);
-				video.style.display = 'none'; // Скрываем если ошибка
-			});
-			
-			trigger.addEventListener('mouseenter', () => {
-				if (videoSource.src) {
-					video.currentTime = 0;
-					video.play().catch(e => console.log("Ошибка воспроизведения:", e));
-				}
-			});
-			
-			trigger.addEventListener('mouseleave', () => {
-				if (!video.paused) video.pause();
-			});
-		});
 		// Добавьте этот код в <script>
 		window.addEventListener('DOMContentLoaded', () => {
 			const testVideo = document.createElement('video');
