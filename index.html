@@ -314,43 +314,19 @@
                 width: 95%;
             }
         }
-		/* Стили для анимированного логотипа */
+		/* CSS */
 		.portfolio-video {
-			position: absolute;
-			top: 0;
-			left: 0;
+			display: none; /* Скрываем видео в галерее */
+		}
+
+		.modal-video {
 			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			opacity: 0;
-			transition: opacity 0.3s ease;
-			z-index: 1;
-			background-color: transparent; /* Убираем черный фон */
+			max-height: 80vh;
+			outline: none;
 		}
 
-		/* Добавьте этот стиль для отладки */
-		.portfolio-video:not([src]) {
-			display: none !important;
-		}
-
-		.portfolio-image {
-			position: relative;
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			z-index: 2;
-			transition: opacity 0.3s ease;
-		}
-
-		.hover-trigger:hover ~ .portfolio-video,
-		.portfolio-item:hover .portfolio-video {
-			opacity: 1;
-			z-index: 3;
-		}
-
-		.hover-trigger:hover ~ .portfolio-image,
-		.portfolio-item:hover .portfolio-image {
-			opacity: 0;
+		.modal.active .modal-video {
+			display: block;
 		}
     </style>
 </head>
@@ -410,22 +386,23 @@
                 
                 <!-- Работа 3 -->
 				<!-- Работа 3 - Анимированный логотип -->
-				<!-- Элемент портфолио -->
+				<!-- HTML -->
 				<div class="portfolio-item">
 					<!-- Статичное изображение -->
-					<img src="путь/к/превью.jpg" alt="Превью" class="portfolio-image">
+					<img src="https://images.unsplash.com/photo-1626785774573-4b799315345d" 
+						 alt="Анимированный логотип" 
+						 class="portfolio-image">
 					
 					<!-- Видео (изначально скрыто) -->
-					<video muted loop playsinline class="portfolio-video">
-						<source src="videos/logo-animation.mp4" type="video/mp4">
-						Ваш браузер не поддерживает видео
+					<video class="portfolio-video" muted loop playsinline>
+						<source src="videos/your-logo-animation.mp4" type="video/mp4">
 					</video>
 					
 					<div class="portfolio-overlay">
 						<h3>Анимированный логотип</h3>
 						<div class="portfolio-tags">
 							<span class="tag">After Effects</span>
-							<span class="tag hover-trigger">2D Animation</span>
+							<span class="tag">2D Animation</span>
 						</div>
 					</div>
 				</div>
@@ -439,7 +416,6 @@
 						</video>
 					</div>
 				</div>
-								
                 <!-- Работа 4 -->
                 <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
                     <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 4">
@@ -506,70 +482,50 @@
     </div>
 
 <script>
-    // Включим режим отладки
-    console.log("Инициализация скрипта...");
-    
     // 1. Инициализация элементов
     const portfolioItems = document.querySelectorAll('.portfolio-item');
     const modal = document.getElementById('modal');
     const modalVideo = document.querySelector('.modal-video');
     const closeModal = document.querySelector('.close-modal');
     
-    if (!modal || !modalVideo || !closeModal) {
-        console.error("Не найдены элементы модального окна!");
-    }
-
-    // 2. Обработчики для модального окна
+    // 2. Клик по логотипу
     portfolioItems.forEach(item => {
         item.addEventListener('click', function() {
             const video = this.querySelector('video');
-            if (video && video.querySelector('source')) {
-                const videoSrc = video.querySelector('source').src;
-                console.log("Источник видео:", videoSrc);
+            if (video) {
+                // Клонируем источник видео для модального окна
+                const source = video.querySelector('source').cloneNode();
+                modalVideo.innerHTML = '';
+                modalVideo.appendChild(source);
                 
-                modalVideo.innerHTML = `<source src="${videoSrc}" type="video/mp4">`;
-                modalVideo.load();
-                
+                // Показываем модальное окно
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 
+                // Воспроизводим видео
+                modalVideo.load();
                 modalVideo.play().catch(e => {
                     console.error("Ошибка воспроизведения:", e);
                 });
             }
         });
     });
-
+    
     // 3. Закрытие модального окна
     closeModal.addEventListener('click', () => {
         modalVideo.pause();
         modal.classList.remove('active');
         document.body.style.overflow = 'auto';
     });
-
-    // 4. Эффект наведения
-    document.querySelectorAll('.hover-trigger').forEach(trigger => {
-        trigger.addEventListener('mouseenter', function() {
-            const video = this.closest('.portfolio-item').querySelector('video');
-            if (video) {
-                console.log("Наведение на 2D Animation");
-                video.currentTime = 0;
-                video.play().catch(e => {
-                    console.error("Ошибка при наведении:", e);
-                });
-            }
-        });
-        
-        trigger.addEventListener('mouseleave', function() {
-            const video = this.closest('.portfolio-item').querySelector('video');
-            if (video && !video.paused) {
-                video.pause();
-            }
-        });
+    
+    // 4. Закрытие при клике вне видео
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modalVideo.pause();
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     });
-
-    console.log("Скрипт инициализирован");
 </script>
-    </script>
 </body>
 </html>
