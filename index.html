@@ -314,7 +314,7 @@
                 width: 95%;
             }
         }
-		/* Стили для видео-превью */
+		/* Стили для анимированного логотипа */
 		.portfolio-video {
 			position: absolute;
 			top: 0;
@@ -323,16 +323,28 @@
 			height: 100%;
 			object-fit: cover;
 			opacity: 0;
-			transition: opacity 0.5s ease;
+			transition: opacity 0.3s ease;
 			z-index: 1;
 		}
 
 		.portfolio-image {
+			position: relative;
 			width: 100%;
 			height: 100%;
 			object-fit: cover;
-			position: relative;
 			z-index: 2;
+			transition: opacity 0.3s ease;
+		}
+
+		.hover-trigger:hover ~ .portfolio-video,
+		.portfolio-item:hover .portfolio-video {
+			opacity: 1;
+			z-index: 3;
+		}
+
+		.hover-trigger:hover ~ .portfolio-image,
+		.portfolio-item:hover .portfolio-image {
+			opacity: 0;
 		}
     </style>
 </head>
@@ -393,10 +405,12 @@
                 <!-- Работа 3 -->
 				<!-- Работа 3 - Анимированный логотип -->
 				<div class="portfolio-item">
-					<!-- Статичное изображение -->
-					<img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Анимированный логотип" class="portfolio-image">
+					<!-- Статичное изображение (оставлено исходное) -->
+					<img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+						 alt="Анимированный логотип" 
+						 class="portfolio-image">
 					
-					<!-- Видео (изначально скрыто) -->
+					<!-- Ваше видео (добавьте правильный путь к файлу) -->
 					<video muted loop playsinline class="portfolio-video">
 						<source src="videos/your-logo-animation.mp4" type="video/mp4">
 					</video>
@@ -517,18 +531,19 @@
                 });
             });
         });
-		 document.querySelectorAll('.hover-trigger').forEach(trigger => {
-        const video = trigger.closest('.portfolio-item').querySelector('video');
-        
-        trigger.addEventListener('mouseenter', () => {
-            video.currentTime = 0;
-            video.play().catch(e => console.log("Автовоспроизведение заблокировано", e));
-        });
-        
-        trigger.addEventListener('mouseleave', () => {
-            video.pause();
-        });
-    });
+		// Управление видео при наведении
+		document.querySelectorAll('.hover-trigger').forEach(trigger => {
+			const video = trigger.closest('.portfolio-item').querySelector('video');
+			
+			trigger.addEventListener('mouseenter', () => {
+				video.currentTime = 0;
+				video.play().catch(e => console.log("Автовоспроизведение заблокировано", e));
+			});
+			
+			trigger.addEventListener('mouseleave', () => {
+				video.pause();
+			});
+		});
 </script>
     </script>
 </body>
