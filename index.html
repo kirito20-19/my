@@ -558,6 +558,20 @@
 				if (!video.paused) video.pause();
 			});
 		});
+		// Добавьте этот код в <script>
+		window.addEventListener('DOMContentLoaded', () => {
+			const testVideo = document.createElement('video');
+			testVideo.src = 'videos/your-logo-animation.mp4';
+			testVideo.addEventListener('canplay', () => {
+				console.log('Видео готово к воспроизведению');
+			});
+			testVideo.addEventListener('error', () => {
+				console.error('Видео не загружается!');
+				document.querySelectorAll('.portfolio-video').forEach(v => {
+					v.style.display = 'none';
+				});
+			});
+		});
 </script>
     </script>
 </body>
