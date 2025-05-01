@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулешов Никита | Видеомонтажёр & Motion-дизайнер</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Основные стили */
+        :root {
+            --primary: #ff4d4d;
+            --dark: #121212;
+            --light: #f8f8f8;
+            --gray: #333;
+            --light-gray: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Шапка */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), #ff8a4d);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--light);
+            color: var(--light);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* О себе */
+        .about {
+            padding: 100px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+        }
+        
+        /* Работы */
+        .portfolio {
+            padding: 50px 20px;
+            background-color: var(--gray);
+        }
+        
+        .portfolio-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 250px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+        
+        .portfolio-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        
+        .tag {
+            background: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            width: 80%;
+            max-width: 1000px;
+            position: relative;
+        }
+        
+        .modal-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+        }
+        
+        /* Контакты */
+        .contact {
+            padding: 100px 20px;
+            text-align: center;
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .contact-info p {
+            margin: 15px 0;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            font-size: 2rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-5px);
+            color: var(--primary);
+        }
+        
+        /* Футер */
+        footer {
+            padding: 30px 20px;
+            text-align: center;
+            background-color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка -->
+    <header>
+        <video class="hero-video" autoplay muted loop>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-woman-dancing-under-neon-lights-1230-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1>Кулешов Никита</h1>
+            <p class="tagline">Видеомонтажёр & Motion-дизайнер</p>
+            <div class="cta-buttons">
+                <a href="#portfolio" class="btn btn-primary">Мои работы</a>
+                <a href="#contact" class="btn btn-outline">Связаться</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- О себе -->
+    <section class="about" id="about">
+        <h2>Обо мне</h2>
+        <p>Я видеомонтажёр и motion-дизайнер с годовым опытом работы. Специализируюсь на создании динамичной графики, рекламных роликов и креативного видеоконтента.</p>
+        <p>Мои навыки включают работу с After Effects, Premiere Pro, а также цветокоррекцию и базовый композитинг. Быстро учусь новому и готов к интересным проектам.</p>
+    </section>
+
+    <!-- Портфолио -->
+    <section class="portfolio" id="portfolio">
+        <div class="portfolio-container">
+            <h2>Мои работы</h2>
+            <div class="portfolio-grid">
+                <!-- Работа 1 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 1">
+                    <div class="portfolio-overlay">
+                        <h3>Рекламный ролик для Nike</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">After Effects</span>
+                            <span class="tag">Premiere Pro</span>
+                            <span class="tag">Motion Design</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Работа 2 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 2">
+                    <div class="portfolio-overlay">
+                        <h3>Музыкальный клип</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">Video Editing</span>
+                            <span class="tag">Color Grading</span>
+                            <span class="tag">VFX</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Работа 3 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 3">
+                    <div class="portfolio-overlay">
+                        <h3>Анимированный логотип</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">After Effects</span>
+                            <span class="tag">2D Animation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Работа 4 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 4">
+                    <div class="portfolio-overlay">
+                        <h3>Корпоративное видео</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">Video Editing</span>
+                            <span class="tag">Motion Graphics</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Работа 5 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1626785774625-ddcddc3445e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 5">
+                    <div class="portfolio-overlay">
+                        <h3>UI/UX анимация</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">After Effects</span>
+                            <span class="tag">UI Animation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Работа 6 -->
+                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
+                    <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 6">
+                    <div class="portfolio-overlay">
+                        <h3>Showreel 2023</h3>
+                        <div class="portfolio-tags">
+                            <span class="tag">Video Editing</span>
+                            <span class="tag">Motion Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contact" id="contact">
+        <h2>Свяжитесь со мной</h2>
+        <div class="contact-info">
+            <p><i class="fas fa-paper-plane"></i> Telegram: <a href="https://t.me/nikuleshow" target="_blank">@nikuleshow</a></p>
+            <p><i class="fas fa-envelope"></i> Email: <a href="mailto:nikitka.kuleshov.02@list.ru">nikitka.kuleshov.02@list.ru</a></p>
+        </div>
+        <div class="social-links">
+            <a href="https://t.me/nikuleshow" class="social-link"><i class="fab fa-telegram"></i></a>
+            <a href="mailto:nikitka.kuleshov.02@list.ru" class="social-link"><i class="fas fa-envelope"></i></a>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2023 Кулешов Никита | Видеомонтажёр & Motion-дизайнер</p>
+    </footer>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <iframe class="modal-video" src="" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Открытие модального окна с видео
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const modal = document.getElementById('modal');
+        const modalVideo = document.querySelector('.modal-video');
+        const closeModal = document.querySelector('.close-modal');
+        
+        portfolioItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const videoUrl = item.getAttribute('data-video');
+                modalVideo.src = videoUrl;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Закрытие модального окна
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+            modalVideo.src = '';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Закрытие при клике вне окна
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                modalVideo.src = '';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
