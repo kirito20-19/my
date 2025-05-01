@@ -314,6 +314,16 @@
                 width: 95%;
             }
         }
+		.portfolio-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.portfolio-item:hover .portfolio-video {
+    transform: scale(1.1);
+}
     </style>
 </head>
 <body>
@@ -372,17 +382,18 @@
                 
                 <!-- Работа 3 -->
 			<!-- Работа 3 - Анимированный логотип -->
-				<div class="portfolio-item" data-video="videos/your-logo-animation.mp4">
+				<div class="portfolio-item">
 					<video autoplay muted loop playsinline class="portfolio-video">
-						<source src="videos/your-logo-animation-preview.mp4" type="video/mp4">
+						<source src="videos/your-logo-animation.mp4" type="video/mp4">
+							Ваш браузер не поддерживает видео.
 					</video>
-					<div class="portfolio-overlay">
-						<h3>Анимированный логотип</h3>
-							<div class="portfolio-tags">
-								<span class="tag">After Effects</span>
-								<span class="tag">2D Animation</span>
-							</div>
-					</div>
+						<div class="portfolio-overlay">
+							<h3>Анимированный логотип</h3>
+								<div class="portfolio-tags">
+									<span class="tag">After Effects</span>
+									<span class="tag">2D Animation</span>
+								</div>
+						</div>
 				</div>
                 
                 <!-- Работа 4 -->
