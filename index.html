@@ -351,6 +351,36 @@
 			left: 0;
 			z-index: 2;
 		}
+		/* Стили для корпоративного видео */
+		.portfolio-item:nth-child(4) { /* 4-й элемент сетки */
+			position: relative;
+			transition: transform 0.3s ease;
+		}
+
+		.portfolio-item:nth-child(4):hover {
+			transform: scale(1.02);
+		}
+
+		.portfolio-item:nth-child(4) .portfolio-video {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: none;
+			z-index: 2;
+		}
+
+		.portfolio-item:nth-child(4).active .portfolio-video {
+			display: block;
+			animation: fadeIn 0.5s ease;
+		}
+
+		@keyframes fadeIn {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
     </style>
 </head>
 <body>
@@ -448,17 +478,26 @@
 						</video>
 					</div>
 				</div>
-                <!-- Работа 4 -->
-                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
-                    <img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 4">
-                    <div class="portfolio-overlay">
-                        <h3>Корпоративное видео</h3>
-                        <div class="portfolio-tags">
-                            <span class="tag">Video Editing</span>
-                            <span class="tag">Motion Graphics</span>
-                        </div>
-                    </div>
-                </div>
+				<!-- Работа 4 - Корпоративное видео -->
+				<div class="portfolio-item">
+					<!-- Статичное превью -->
+					<img src="https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7" 
+						 alt="Корпоративное видео" 
+						 class="portfolio-image">
+					
+					<!-- Видеофайл (замените путь) -->
+					<video class="portfolio-video" muted loop playsinline>
+						<source src="videos/corporate-video.mp4" type="video/mp4">
+					</video>
+					
+					<div class="portfolio-overlay">
+						<h3>Корпоративное видео</h3>
+						<div class="portfolio-tags">
+							<span class="tag">Video Editing</span>
+							<span class="tag">Motion Graphics</span>
+						</div>
+					</div>
+				</div>
                 
                 <!-- Работа 5 -->
                 <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
@@ -577,6 +616,34 @@
 			}
 		});
 }
+	// Обработчик для корпоративного видео
+	const corporateItem = document.querySelector('.portfolio-item:nth-child(4)');
+	if (corporateItem) {
+		corporateItem.addEventListener('click', function(e) {
+			// Игнорируем клики по тегам
+			if (!e.target.classList.contains('tag')) {
+				const video = this.querySelector('video');
+				if (video) {
+					// Закрываем другие видео
+					document.querySelectorAll('.portfolio-item').forEach(item => {
+						if (item !== this) {
+							item.classList.remove('active');
+							item.querySelector('video')?.pause();
+						}
+					});
+					
+					// Управляем текущим видео
+					this.classList.toggle('active');
+					if (this.classList.contains('active')) {
+						video.currentTime = 0;
+						video.play().catch(e => console.log("Autoplay blocked:", e));
+					} else {
+						video.pause();
+					}
+				}
+			}
+		});
+	}
 </script>
 </body>
 </html>
