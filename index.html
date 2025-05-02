@@ -328,6 +328,29 @@
 		.modal.active .modal-video {
 			display: block;
 		}
+		/* Стили для Nike ролика */
+		.portfolio-item:nth-child(1) { /* Первый элемент сетки */
+			position: relative;
+			overflow: hidden;
+			border-radius: 8px;
+		}
+
+		.portfolio-item:nth-child(1) .portfolio-image {
+			transition: opacity 0.3s ease;
+		}
+
+		.portfolio-item:nth-child(1):hover .portfolio-image {
+			opacity: 0.7;
+		}
+
+		/* Анимация при клике */
+		.portfolio-item:nth-child(1).active .portfolio-video {
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+		}
     </style>
 </head>
 <body>
@@ -358,19 +381,28 @@
         <div class="portfolio-container">
             <h2>Мои работы</h2>
             <div class="portfolio-grid">
-                <!-- Работа 1 -->
-                <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
-                    <img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 1">
-                    <div class="portfolio-overlay">
-                        <h3>Рекламный ролик для Nike</h3>
-                        <div class="portfolio-tags">
-                            <span class="tag">After Effects</span>
-                            <span class="tag">Premiere Pro</span>
-                            <span class="tag">Motion Design</span>
-                        </div>
-                    </div>
-                </div>
-                
+                <!-- Работа 1 - Рекламный ролик для Nike -->
+			<div class="portfolio-item">
+				<!-- Статичное превью -->
+				<img src="https://images.unsplash.com/photo-1551269901-5c5e14c25df7" 
+					 alt="Рекламный ролик Nike" 
+					 class="portfolio-image">
+				
+				<!-- Видеофайл (замените путь на свой) -->
+				<video class="portfolio-video" muted loop playsinline>
+					<source src="videos/nike-ad.mp4" type="video/mp4">
+				</video>
+				
+				<div class="portfolio-overlay">
+					<h3>Рекламный ролик для Nike</h3>
+					<div class="portfolio-tags">
+						<span class="tag">After Effects</span>
+						<span class="tag">Premiere Pro</span>
+						<span class="tag">Motion Design</span>
+					</div>
+				</div>
+			</div>
+							
                 <!-- Работа 2 -->
                 <div class="portfolio-item" data-video="https://www.youtube.com/embed/dQw4w9WgXcQ">
                     <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Проект 2">
@@ -526,6 +558,25 @@
             document.body.style.overflow = 'auto';
         }
     });
+	// Обработчик для Nike ролика
+	const nikeItem = document.querySelector('.portfolio-item:nth-child(1)');
+	if (nikeItem) {
+		nikeItem.addEventListener('click', function(e) {
+			// Проверяем, не кликнули ли по тегам
+			if (!e.target.classList.contains('tag')) {
+				const video = this.querySelector('video');
+				if (video) {
+					this.classList.toggle('active');
+					if (this.classList.contains('active')) {
+						video.currentTime = 0;
+						video.play().catch(e => console.log("Autoplay blocked:", e));
+					} else {
+						video.pause();
+					}
+				}
+			}
+		});
+}
 </script>
 </body>
 </html>
